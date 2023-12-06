@@ -7,11 +7,24 @@ const PORT = 5000;
 app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
+const router = express.Router();
+// app.use("/",router);
+app.get("/", (req, res) => {
+    // console.log(req.body);
+    var sql = 'select * from users';
+    connection.query(sql, (err, result) => {
+        if (!err) {
+            console.log("hello");
+            
+            res.send(result.rows);
+            console.log(result.rows);
+        }
+        else {
+            console.log(err);
+        }
+    });
 
-app.use("/", (req, res) => {
-    console.log(req.body);
-    res.send("Hello i m from server");
-})
+});
 
 app.listen(PORT, () => {
     console.log("port started at 5000");
