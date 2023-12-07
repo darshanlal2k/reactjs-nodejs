@@ -9,13 +9,13 @@ const cors = require('cors');
 app.use(cors());
 const router = express.Router();
 // app.use("/",router);
-app.get("/", (req, res) => {
-    // console.log(req.body);
+app.get("/api", (req, res) => {
+    console.log(req.body);
+    console.log("from get");
     var sql = 'select * from users';
     connection.query(sql, (err, result) => {
         if (!err) {
             console.log("hello");
-            
             res.send(result.rows);
             console.log(result.rows);
         }
@@ -24,6 +24,31 @@ app.get("/", (req, res) => {
         }
     });
 
+});
+app.post("/api", (req, res) => {
+    console.log("from post");
+    const dataReceived = req.body;
+	console.log(dataReceived);
+    console.log("from post");
+    var sql = "insert into users(name, email, companyname, contact, address) values ($1, $2, $3, $4, $5)";
+    var values = [
+        // dataReceived.id,
+		dataReceived.name,
+		dataReceived.email,
+		dataReceived.companyname,
+		dataReceived.contact,
+		dataReceived.address,
+	];
+    connection.query(sql, values, (err, result) => {
+        if (!err) {
+            console.log("hello");
+            res.send(result.rows);
+            console.log(result.rows);
+        }
+        else {
+            console.log(err);
+        }
+    });
 });
 
 app.listen(PORT, () => {
